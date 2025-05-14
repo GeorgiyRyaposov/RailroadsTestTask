@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Code.Scripts
 {
+    /// <summary>
+    /// Узел графа, содержит соседей
+    /// </summary>
     public class Node : MonoBehaviour
     {
         public Edge[] Edges;

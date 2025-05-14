@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Code.Scripts
 {
+    /// <summary>
+    /// Поезд: содержит параметры и умеет передвигаться по заданному пути
+    /// </summary>
     public class Train : MonoBehaviour
     {
         public float Speed => _speed;
@@ -80,7 +83,7 @@ namespace Code.Scripts
                 return;
             }
             
-            _miningTime = BaseMiningTime * mine.miningTimeMultiplier;
+            _miningTime = BaseMiningTime * mine.MiningTimeMultiplier;
         }
         
         private void MineResource()

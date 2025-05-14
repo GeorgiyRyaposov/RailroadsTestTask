@@ -2,9 +2,12 @@
 
 namespace Code.Scripts
 {
+    /// <summary>
+    /// Узел базы, куда свозят ресурсы
+    /// </summary>
     public class Base : Node
     {
-        [Range(0.1f, 5f)] public float resourceMultiplier = 1f;
+        [Range(0.1f, 5f)] public float ResourceMultiplier = 1f;
 
         // void OnDrawGizmos()
         // {

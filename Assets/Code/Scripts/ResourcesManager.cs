@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 namespace Code.Scripts
 {
+    /// <summary>
+    /// Счетчик ресурсов
+    /// </summary>
     public class ResourcesManager : MonoBehaviour
     {
         [SerializeField] private Text _totalResourcesLabel;

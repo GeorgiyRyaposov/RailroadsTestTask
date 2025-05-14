@@ -2,9 +2,12 @@
 
 namespace Code.Scripts
 {
+    /// <summary>
+    /// Узел шахты
+    /// </summary>
     public class Mine : Node
     {
-        [Range(0.1f, 5f)] public float miningTimeMultiplier = 1f;
+        [Range(0.1f, 5f)] public float MiningTimeMultiplier = 1f;
 
         // void OnDrawGizmos()
         // {

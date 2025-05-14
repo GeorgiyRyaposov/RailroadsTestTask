@@ -2,6 +2,9 @@
 
 namespace Code.Scripts
 {
+    /// <summary>
+    /// Отвечает за общую логику работы поездов
+    /// </summary>
     public class TrainsManager : MonoBehaviour
     {
         public Train[] Trains;
@@ -38,7 +41,7 @@ namespace Code.Scripts
             {
                 if (train.HasResources)
                 {
-                    ResourcesManager.Add(baseNode.resourceMultiplier);
+                    ResourcesManager.Add(baseNode.ResourceMultiplier);
                     train.HasResources = false;
                 }
 

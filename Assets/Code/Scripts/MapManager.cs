@@ -6,6 +6,9 @@ using Random = UnityEngine.Random;
 
 namespace Code.Scripts
 {
+    /// <summary>
+    /// Отвечает за поиск наилучшего пути
+    /// </summary>
     public class MapManager : MonoBehaviour
     {
         [SerializeField] private Node[] _allNodes;
@@ -52,7 +55,7 @@ namespace Code.Scripts
                 var efficiency = 0f;
                 if (target is Base baseNode)
                 {
-                    efficiency = baseNode.resourceMultiplier / pathCost;
+                    efficiency = baseNode.ResourceMultiplier / pathCost;
                 }
                 else if (target is Mine mineNode)
                 {
@@ -102,11 +105,11 @@ namespace Code.Scripts
             // Общее время: путь до шахты + добыча + путь до базы
             var pathToMine = FindPathTo(start, mine);
             var timeToMine = CalculatePathCost(start, pathToMine, train);
-            var miningTime = train.BaseMiningTime * mine.miningTimeMultiplier;
+            var miningTime = train.BaseMiningTime * mine.MiningTimeMultiplier;
             var totalTime = timeToMine + miningTime + minBaseCost;
 
             // Эффективность: ресурс с учетом множителя базы / общее время
-            return closestBase.resourceMultiplier / totalTime;
+            return closestBase.ResourceMultiplier / totalTime;
         }
 
         private List<Node> FindPathTo(Node start, Node target)
@@ -189,7 +192,7 @@ namespace Code.Scripts
             // Если конечная точка - шахта, добавляем время добычи
             if (path[path.Count - 1] is Mine mine)
             {
-                totalCost += train.BaseMiningTime * mine.miningTimeMultiplier;
+                totalCost += train.BaseMiningTime * mine.MiningTimeMultiplier;
             }
 
             return totalCost;
