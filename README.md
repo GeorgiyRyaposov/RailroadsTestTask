@@ -9,3 +9,7 @@
 Настройки поездов:
 
 ![alt text](TrainParams.png)
+
+---
+
+![alt text](Result.gif)
