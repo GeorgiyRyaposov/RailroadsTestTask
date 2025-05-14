@@ -9,6 +9,19 @@ namespace Code.Scripts
     {
         public Edge[] Edges;
 
+        public float GetDistanceTo(Node other)
+        {
+            for (int i = 0; i < Edges.Length; i++)
+            {
+                if (Edges[i].Node == other)
+                {
+                    return Edges[i].Length;
+                }
+            }
+
+            return Mathf.Infinity;
+        }
+        
         void OnDrawGizmos()
         {
             Gizmos.color = Color.green;

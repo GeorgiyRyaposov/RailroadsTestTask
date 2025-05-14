@@ -25,6 +25,8 @@ namespace Code.Scripts
         
         private List<Node> _currentPath;
         private int _currentPathIndex;
+        private float _distanceToNextNode;
+        private float _passedTime;
         private bool _isMining;
         private float _miningTime;
 
@@ -38,11 +40,21 @@ namespace Code.Scripts
         {
             _currentPath = path;
             _currentPathIndex = 0;
+            ResetDistances();
+        }
+
+        private void ResetDistances()
+        {
+            _passedTime = 0f;
+            if (_currentPathIndex < _currentPath.Count)
+            {
+                _distanceToNextNode = _currentNode.GetDistanceTo(_currentPath[_currentPathIndex]);
+            }
         }
 
         private void Update()
         {
-            if (_miningTime > 0)
+            if (_isMining)
             {
                 MineResource();
             }
@@ -59,14 +71,19 @@ namespace Code.Scripts
         private void MoveAlongPath()
         {
             var targetNode = _currentPath[_currentPathIndex];
-            var step = Speed * Time.deltaTime;
+            _passedTime += Time.deltaTime;
+            var timeToPass = _distanceToNextNode / Speed;
+            var progress = _passedTime / timeToPass;
+            
             transform.forward = (targetNode.transform.position - transform.position).normalized;
-            transform.position = Vector3.MoveTowards(transform.position, targetNode.transform.position, step);
-
-            if (Vector3.SqrMagnitude(transform.position - targetNode.transform.position) < 0.01f)
+            transform.position = Vector3.Lerp(_currentNode.transform.position, targetNode.transform.position, progress);
+            
+            if (progress > 0.99f)
             {
                 _currentNode = targetNode;
                 _currentPathIndex++;
+                
+                ResetDistances();
             }
         }
 
@@ -83,6 +100,7 @@ namespace Code.Scripts
                 return;
             }
             
+            _isMining = true;
             _miningTime = BaseMiningTime * mine.MiningTimeMultiplier;
         }
         
@@ -92,25 +110,8 @@ namespace Code.Scripts
 
             if (_miningTime <= 0)
             {
+                _isMining = false;
                 OnMineResourcesCompleted.Invoke(this);
-            }
-        }
-
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawCube(transform.position, Vector3.one * 0.3f);
-
-            // Рисуем путь
-            if (_currentPath != null && _currentPathIndex < _currentPath.Count)
-            {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(transform.position, _currentPath[_currentPathIndex].transform.position);
-
-                for (var i = _currentPathIndex; i < _currentPath.Count - 1; i++)
-                {
-                    Gizmos.DrawLine(_currentPath[i].transform.position, _currentPath[i + 1].transform.position);
-                }
             }
         }
     }

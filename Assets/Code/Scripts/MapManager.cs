@@ -185,7 +185,7 @@ namespace Code.Scripts
 
             foreach (var node in path)
             {
-                totalCost += GetDistanceTo(start, node) / train.Speed;
+                totalCost += start.GetDistanceTo(node) / train.Speed;
                 start = node;
             }
 
@@ -196,19 +196,6 @@ namespace Code.Scripts
             }
 
             return totalCost;
-        }
-        
-        private float GetDistanceTo(Node node, Node other)
-        {
-            for (int i = 0; i < node.Edges.Length; i++)
-            {
-                if (node.Edges[i].Node == other)
-                {
-                    return node.Edges[i].Length;
-                }
-            }
-
-            return Mathf.Infinity;
         }
     }
 }

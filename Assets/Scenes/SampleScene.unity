@@ -556,7 +556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3151641497314580945, guid: 54c301dd4bc7ef34ca880ce9d54c200c, type: 3}
       propertyPath: _speed
-      value: 50
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3151641497314580945, guid: 54c301dd4bc7ef34ca880ce9d54c200c, type: 3}
       propertyPath: _baseMiningTime
