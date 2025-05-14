@@ -18,7 +18,7 @@ namespace Code.Scripts
         public Node CurrentNode => _currentNode;
         private Node _currentNode;
 
-        public bool HasResources;
+        [NonSerialized] public bool HasResources;
 
         public Action<Train> OnDestinationArrived = (_) => { };
         public Action<Train> OnMineResourcesCompleted = (_) => { };
