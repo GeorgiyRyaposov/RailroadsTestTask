@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using Code.Scripts.Services;
-using VContainer.Unity;
+﻿using VContainer.Unity;
 
-namespace Code.Scripts
+namespace Code.Scripts.Services
 {
     /// <summary>
     /// Отвечает за общую логику работы поездов
@@ -10,17 +8,19 @@ namespace Code.Scripts
     public class TrainsService : IStartable
     {
         private readonly Train[] _trains;
-        private readonly PathService _pathService;
+        private readonly GraphService _graphService;
+        private readonly EfficiencyPathService _efficiencyPathService;
         private readonly ResourcesService _resourcesService;
 
         public TrainsService(Train[] trains, 
-            PathService pathService, ResourcesService resourcesService)
+            GraphService graphService, ResourcesService resourcesService, 
+            EfficiencyPathService efficiencyPathService)
         {
             _trains = trains;
-            _pathService = pathService;
+            _graphService = graphService;
             _resourcesService = resourcesService;
+            _efficiencyPathService = efficiencyPathService;
         }
-
 
         public void Start()
         {
@@ -33,7 +33,7 @@ namespace Code.Scripts
             {
                 var train = _trains[i];
                 
-                train.Initialize(_pathService.GetRandomNode());
+                train.Initialize(_graphService.GetRandomNode());
                 train.OnDestinationArrived = OnDestinationArrived;
                 train.OnMineResourcesCompleted = OnMineResourcesCompleted;
 
@@ -83,13 +83,13 @@ namespace Code.Scripts
         
         private void MoveTrainToMine(Train train)
         {
-            var path = _pathService.FindBestPathToMine(train.CurrentNode, train);
+            var path = _efficiencyPathService.FindBestPath<Mine>(train.CurrentNode, train);
             train.SetPath(path);
         }
 
         private void MoveTrainToBase(Train train)
         {
-            var path = _pathService.FindBestPathToBase(train.CurrentNode, train);
+            var path = _efficiencyPathService.FindBestPath<Base>(train.CurrentNode, train);
             train.SetPath(path);
         }
     }

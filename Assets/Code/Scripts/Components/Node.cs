@@ -7,8 +7,6 @@ namespace Code.Scripts
     /// </summary>
     public class Node : MonoBehaviour
     {
-        public NodeType Type;
-        
         public Edge[] Edges;
 
         public float GetDistanceTo(Node other)

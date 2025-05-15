@@ -1,4 +1,5 @@
-﻿using Code.Scripts.Services;
+﻿using Code.Scripts.EfficiencyPathSolvers;
+using Code.Scripts.Services;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -16,9 +17,13 @@ namespace Code.Scripts
             builder.RegisterInstance(_nodes);
             
             builder.RegisterEntryPoint<TrainsService>();
-            builder.Register<PathService>(Lifetime.Singleton);
+            builder.Register<GraphService>(Lifetime.Singleton);
             builder.Register<ResourcesService>(Lifetime.Singleton);
             builder.Register<GameState>(Lifetime.Singleton);
+            
+            builder.Register<EfficiencyPathService>(Lifetime.Singleton);
+            builder.Register<IEfficiencyPathSolver, BaseEfficiencyPathSolver>(Lifetime.Singleton);
+            builder.Register<IEfficiencyPathSolver, MineEfficiencyPathSolver>(Lifetime.Singleton);
         }
     }
 }
