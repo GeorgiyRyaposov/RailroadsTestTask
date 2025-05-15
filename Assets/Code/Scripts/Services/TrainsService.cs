@@ -1,28 +1,39 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Code.Scripts.Services;
+using VContainer.Unity;
 
 namespace Code.Scripts
 {
     /// <summary>
     /// Отвечает за общую логику работы поездов
     /// </summary>
-    public class TrainsManager : MonoBehaviour
+    public class TrainsService : IStartable
     {
-        public Train[] Trains;
-        public ResourcesManager ResourcesManager;
-        public MapManager MapManager;
-        
-        private void Start()
+        private readonly Train[] _trains;
+        private readonly PathService _pathService;
+        private readonly ResourcesService _resourcesService;
+
+        public TrainsService(Train[] trains, 
+            PathService pathService, ResourcesService resourcesService)
+        {
+            _trains = trains;
+            _pathService = pathService;
+            _resourcesService = resourcesService;
+        }
+
+
+        public void Start()
         {
             SpawnTrains();
         }
         
         private void SpawnTrains()
         {
-            for (int i = 0; i < Trains.Length; i++)
+            for (int i = 0; i < _trains.Length; i++)
             {
-                var train = Trains[i];
+                var train = _trains[i];
                 
-                train.Initialize(MapManager.GetRandomNode());
+                train.Initialize(_pathService.GetRandomNode());
                 train.OnDestinationArrived = OnDestinationArrived;
                 train.OnMineResourcesCompleted = OnMineResourcesCompleted;
 
@@ -41,7 +52,7 @@ namespace Code.Scripts
             {
                 if (train.HasResources)
                 {
-                    ResourcesManager.Add(baseNode.ResourceMultiplier);
+                    _resourcesService.AddResources(baseNode.ResourceMultiplier);
                     train.HasResources = false;
                 }
 
@@ -72,13 +83,13 @@ namespace Code.Scripts
         
         private void MoveTrainToMine(Train train)
         {
-            var path = MapManager.FindBestPathToMine(train.CurrentNode, train);
+            var path = _pathService.FindBestPathToMine(train.CurrentNode, train);
             train.SetPath(path);
         }
 
         private void MoveTrainToBase(Train train)
         {
-            var path = MapManager.FindBestPathToBase(train.CurrentNode, train);
+            var path = _pathService.FindBestPathToBase(train.CurrentNode, train);
             train.SetPath(path);
         }
     }

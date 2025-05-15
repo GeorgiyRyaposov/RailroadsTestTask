@@ -9,22 +9,23 @@ namespace Code.Scripts
     /// <summary>
     /// Отвечает за поиск наилучшего пути
     /// </summary>
-    public class MapManager : MonoBehaviour
+    public class PathService
     {
-        [SerializeField] private Node[] _allNodes;
-        [SerializeField] private Base[] _baseNodes;
-        [SerializeField] private Mine[] _mineNodes;
+        private readonly Node[] _nodes;
+        private readonly Base[] _baseNodes;
+        private readonly Mine[] _mineNodes;
 
-        private void OnValidate()
+        public PathService(Node[] nodes)
         {
-            _baseNodes = _allNodes.Where(x => x is Base).Cast<Base>().ToArray();
-            _mineNodes = _allNodes.Where(x => x is Mine).Cast<Mine>().ToArray();
+            _nodes = nodes;
+            _baseNodes = _nodes.Where(x => x is Base).Cast<Base>().ToArray();
+            _mineNodes = _nodes.Where(x => x is Mine).Cast<Mine>().ToArray();
         }
-
+        
         public Node GetRandomNode()
         {
-            var randomNodeIndex = Random.Range(0, _allNodes.Length);
-            return _allNodes[randomNodeIndex];
+            var randomNodeIndex = Random.Range(0, _nodes.Length);
+            return _nodes[randomNodeIndex];
         }
 
         public List<Node> FindBestPathToMine(Node currentNode, Train train)
@@ -121,7 +122,7 @@ namespace Code.Scripts
 
             List<Node> path = null;
 
-            foreach (var node in _allNodes)
+            foreach (var node in _nodes)
             {
                 if (node == start)
                 {
@@ -187,12 +188,6 @@ namespace Code.Scripts
             {
                 totalCost += start.GetDistanceTo(node) / train.Speed;
                 start = node;
-            }
-
-            // Если конечная точка - шахта, добавляем время добычи
-            if (path[path.Count - 1] is Mine mine)
-            {
-                totalCost += train.BaseMiningTime * mine.MiningTimeMultiplier;
             }
 
             return totalCost;
