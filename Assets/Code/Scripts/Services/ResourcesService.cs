@@ -2,6 +2,9 @@
 
 namespace Code.Scripts.Services
 {
+    /// <summary>
+    /// Ведет учет ресурсов
+    /// </summary>
     public class ResourcesService
     {
         public event Action OnResourcesChanged = () => { };
